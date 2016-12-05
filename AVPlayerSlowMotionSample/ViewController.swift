@@ -14,7 +14,7 @@ class ViewController: UIViewController {
   
   @IBOutlet weak var seekBar: UISlider!
   @IBOutlet weak var videoPlayerView: AVPlayerView!
-  @IBOutlet weak var slowButton: UIButton!
+  @IBOutlet weak var slowButton: SlowButton!
   @IBOutlet weak var playButton: UIButton!
   
   private var playerItem: AVPlayerItem? = nil
@@ -25,12 +25,13 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let path = "https://github.com/kozyty/AVPlayerSlowMotionSample/blob/master/slowmotion_ios.MOV?raw=true"
+    let path = "https://github.com/kozyty/AVPlayerSlowMotionSample/blob/master/slowmotion-4.MOV?raw=true"
     guard let url = URL(string: path) else { return }
     self.playerItem = AVPlayerItem(url: url)
     self.videoPlayer = AVPlayer(playerItem: playerItem)
     
     guard let videoPlayer = self.videoPlayer else { return }
+    self.slowButton.configure(videoPlayer)
     videoPlayerView.setPlayer(player: videoPlayer)
     videoPlayerView.setVideoFillMode(fillMode: AVLayerVideoGravityResizeAspect)
     
@@ -55,23 +56,24 @@ class ViewController: UIViewController {
   }
   
   @IBAction func touchDownSlowButton(_ sender: Any) {
-    if self.isPlaying() {
-      self.slow()
-    }
+//    if self.isPlaying() {
+//      self.slow()
+//    }
   }
   
   @IBAction func touchUpSlowButton(_ sender: Any) {
-    if self.isPlaying() {
-      self.play()
-    } else {
-      self.pause()
-    }
+//    if self.isPlaying() {
+//      self.play()
+//    } else {
+//      self.pause()
+//    }
   }
   
   // MARK: - Player Notifications
   
   func playerItemDidReachEnd(notification: NSNotification) {
     self.seekToTime(position: 0)
+    self.play()
   }
   
   
@@ -111,8 +113,8 @@ class ViewController: UIViewController {
   // MARK: - Play & Pause
   
   func play() {
-    self.videoPlayer!.automaticallyWaitsToMinimizeStalling = true
-    self.videoPlayer!.play()
+    self.videoPlayer!.automaticallyWaitsToMinimizeStalling = false
+    self.videoPlayer!.setRate(2.0, time: kCMTimeInvalid, atHostTime: kCMTimeInvalid)
   }
   
   func pause() {
@@ -121,7 +123,7 @@ class ViewController: UIViewController {
   
   func slow() {
     self.videoPlayer!.automaticallyWaitsToMinimizeStalling = false
-    self.videoPlayer!.setRate(0.0001, time: kCMTimeInvalid, atHostTime: kCMTimeInvalid)
+    self.videoPlayer!.setRate(0.5, time: kCMTimeInvalid, atHostTime: kCMTimeInvalid)
   }
   
   func isScrubbing() -> Bool {
