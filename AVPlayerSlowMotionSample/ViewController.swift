@@ -25,14 +25,14 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let path = "http://mazwai.com/system/posts/videos/000/000/216/original/test_flight.mp4"
+    let path = "https://github.com/kozyty/AVPlayerSlowMotionSample/blob/master/slowmotion_ios.MOV?raw=true"
     guard let url = URL(string: path) else { return }
     self.playerItem = AVPlayerItem(url: url)
     self.videoPlayer = AVPlayer(playerItem: playerItem)
     
     guard let videoPlayer = self.videoPlayer else { return }
     videoPlayerView.setPlayer(player: videoPlayer)
-    videoPlayerView.setVideoFillMode(fillMode: AVLayerVideoGravityResizeAspectFill)
+    videoPlayerView.setVideoFillMode(fillMode: AVLayerVideoGravityResizeAspect)
     
     NotificationCenter.default.addObserver(self, selector: #selector(self.playerItemDidReachEnd(notification:)), name: .AVPlayerItemDidPlayToEndTime, object: self.playerItem)
     
@@ -121,7 +121,7 @@ class ViewController: UIViewController {
   
   func slow() {
     self.videoPlayer!.automaticallyWaitsToMinimizeStalling = false
-    self.videoPlayer!.setRate(0.2, time: kCMTimeInvalid, atHostTime: kCMTimeInvalid)
+    self.videoPlayer!.setRate(0.0001, time: kCMTimeInvalid, atHostTime: kCMTimeInvalid)
   }
   
   func isScrubbing() -> Bool {
